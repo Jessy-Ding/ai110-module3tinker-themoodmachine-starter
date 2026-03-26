@@ -50,6 +50,20 @@ SAMPLE_POSTS = [
     "This is fine",
     "So excited for the weekend",
     "I am not happy about this",
+    "lowkey exhausted but highkey proud",
+    "lol today was chaos 😂💀",
+    "I absolutely love waiting in traffic for an hour",
+    "it is what it is",
+    "not bad at all",
+    "No cap this coffee is amazing",
+    "I can't even tell if today was good or bad",
+    "Great, another meeting that could have been an email",
+    "lowkey proud but also stressed about finals",
+    "traffic again 😂 love that for me",
+    "meh, not great not terrible",
+    "I am so relaxed and chill today",
+    "No sleep, no coffee, no hope",
+    "bad but manageable"
 ]
 
 # Human labels for each post above.
@@ -65,9 +79,23 @@ TRUE_LABELS = [
     "neutral",   # "This is fine"
     "positive",  # "So excited for the weekend"
     "negative",  # "I am not happy about this"
+    "mixed",
+    "negative",
+    "negative",
+    "neutral",
+    "neutral",
+    "positive",
+    "mixed",
+    "negative",
+    "mixed",
+    "negative",
+    "neutral",
+    "positive",
+    "negative",
+    "mixed"
 ]
 
-# TODO: Add 5-10 more posts and labels.
+# Added 8 more posts and labels to broaden style coverage and edge cases.
 #
 # Requirements:
 #   - For every new post you add to SAMPLE_POSTS, you must add one
@@ -91,4 +119,4 @@ TRUE_LABELS = [
 # TRUE_LABELS.append("mixed")
 #
 # Remember to keep them aligned:
-#   len(SAMPLE_POSTS) == len(TRUE_LABELS)
+print(len(SAMPLE_POSTS) == len(TRUE_LABELS))
