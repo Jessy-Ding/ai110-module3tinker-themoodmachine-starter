@@ -208,6 +208,12 @@ Failure differences:
 - Rule based failures mostly come from lexicon gaps and unseen phrasing.
 - ML fit this dataset extremely well, but this may not hold on unseen data because it is currently evaluated on training data.
 
+**Short comparison (rule based vs ML extension):**
+
+- Yes, the learned model behaved differently: it captured several patterns the rule based system missed, including mixed/slang-heavy examples and neutral phrasing such as "not bad at all".
+- In this in-dataset evaluation, ML fixed multiple rule-based failures (for example: "lowkey proud but also stressed about finals", "traffic again 😂 love that for me", and "No sleep, no coffee, no hope") and did not introduce new errors on `SAMPLE_POSTS`.
+- The ML model was very sensitive to the labels I created: adding or changing a few examples noticeably shifted predictions, which is expected with a small dataset and train-on/evaluate-on-the-same-data setup.
+
 ## 6. Limitations
 
 Describe the most important limitations.  
@@ -221,11 +227,21 @@ Examples:
 **Your answer:**  
 Key limitations:
 
-- Small dataset
-- Ambiguous labels in some edge cases
-- Rule based sarcasm handling is narrow and pattern-specific
-- ML score is likely optimistic due to training-set evaluation
-- Both models are tuned for short, informal text only
+- Small dataset (20 posts) means both models are sensitive to individual examples and wording.
+
+- Rule-based lexicon gaps cause wrong labels when key words are missing from sentiment lists.
+  Example: "lowkey proud but also stressed about finals" was predicted `negative` instead of `mixed` because `stressed` is in the negative lexicon but `proud` is not in the positive lexicon.
+
+- Rule-based sarcasm/context handling is narrow and pattern-specific.
+  Example: "traffic again 😂 love that for me" was predicted `positive` instead of `negative` because the positive word `love` was counted, but this phrasing did not match the current handcrafted sarcasm patterns.
+
+- Rule-based negation logic is local (next-token flip), so it misses broader negative constructions.
+  Example: "No sleep, no coffee, no hope" was predicted `neutral` instead of `negative` because none of the follow-up words are in the sentiment lexicons, so repeated deprivation context is undercounted.
+
+- ML results in Part 4 are likely over-optimistic because evaluation is on the same data used for training.
+  Example: ML reported `1.00` accuracy on `SAMPLE_POSTS`, but this does not prove generalization to new posts; it mainly shows the model can fit patterns present in the training set.
+
+- Both models are currently tuned for short, informal English-like text, so performance may drop on longer posts, different dialects, or domain-shifted language.
 
 ## 7. Ethical Considerations
 
@@ -243,6 +259,12 @@ Potential risks:
 - Slang/dialect differences could create fairness issues
 - Overreliance on noisy labels may lead to harmful decisions
 - Personal text analysis requires user consent and careful privacy handling
+
+Bias and scope note:
+
+- This model is optimized for short, informal, mostly English social-text similar to the dataset (including a limited set of slang and emoji conventions).
+- It may misinterpret users outside that scope, such as speakers of other dialects/communities, multilingual code-switching users, or people using cultural references not represented in `SAMPLE_POSTS`.
+- Tone markers like sarcasm, irony, or community-specific phrasing may be read literally when they do not match patterns seen in the data.
 
 ## 8. Ideas for Improvement
 
